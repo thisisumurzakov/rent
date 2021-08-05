@@ -160,8 +160,6 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.ScopedRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {"sendSMS": "5/min"},
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
 }
 SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),

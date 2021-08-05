@@ -9,6 +9,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .pagination import Pagination
 from ..models import Product, Subcategory, Rating
 from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer
 
@@ -16,6 +17,7 @@ from ..serializers.product_serializer import ProductListSerializer, ProductAddSe
 class ProductListView(ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ProductListSerializer
+    pagination_class = Pagination
 
     def get_queryset(self):
         s = get_object_or_404(Subcategory, slug=self.kwargs["subcategory"],
