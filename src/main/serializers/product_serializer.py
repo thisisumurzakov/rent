@@ -5,7 +5,7 @@ from ..models import Product
 
 class ProductListSerializer(serializers.ModelSerializer):
     category = serializers.SlugField(source="subcategory.parent.slug")
-    middle_star = serializers.IntegerField()
+    avarege_star = serializers.IntegerField()
     class Meta:
         model = Product
         fields = ('image', 'title', 'slug', 'price', 'city', 'publish',

@@ -24,7 +24,7 @@ class ProductListView(ListAPIView):
                               parent=self.kwargs["category"])
         return Product.objects.filter(subcategory=s, draft=False)\
             .select_related('subcategory__parent')\
-            .annotate(middle_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
 class ProductGetView(APIView):
