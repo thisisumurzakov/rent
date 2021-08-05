@@ -1,6 +1,6 @@
 from .base import *
 
 ALLOWED_HOSTS = ["*"]
-DEBUG = False
+DEBUG = True
 
 CORS_ALLOW_ALL_ORIGINS = True
