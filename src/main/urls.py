@@ -20,6 +20,6 @@ urlpatterns = [
     path('product/delete/<slug:slug>/', ProductView.as_view()),
     path('product/search/', ProductSearchView.as_view()),
 
-    path('add/review/<slug:product>/', ReviewAddView.as_view()),
-    path('list/review/<slug:product>/', ReviewListView.as_view()),
+    path('review/add/<slug:product>/', ReviewAddView.as_view()),
+    path('review/list/<slug:product>/', ReviewListView.as_view()),
 ]
