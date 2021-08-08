@@ -49,6 +49,7 @@ class ProductAddView(APIView):
                                           ''.join(random.choices(
                                               string.ascii_uppercase + string.ascii_lowercase + string.digits,
                                               k=6))
+        print(request.data)
         s = ProductAddSerializer(data=request.data)
         s.is_valid(raise_exception=True)
         s.save()
@@ -64,6 +65,7 @@ class ProductView(APIView):
                          k=6))
         s = request.data['product']['subcategory'].capitalize()
         exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
+        print(request.data)
         serializer = eval(f"{s}AddSerializer(data=request.data)")
         serializer.is_valid(raise_exception=True)
         serializer.save()
