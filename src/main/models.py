@@ -32,7 +32,7 @@ def upload_to(instance, filename):
 
 
 class Product(models.Model):
-    image = models.ImageField(upload_to=upload_to)
+    image = models.ImageField(upload_to=upload_to, blank=True, null=True)
     title = models.CharField(max_length=150)
     slug = models.SlugField(primary_key=True)
     description = models.TextField()

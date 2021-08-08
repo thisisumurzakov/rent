@@ -6,6 +6,11 @@
       <change afterPath="$PROJECT_DIR$/../life_cycle/hospital/managers.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../vlk/requirements/base.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/serializers/product_serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/serializers/product_serializer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/views/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/views/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/real_estate/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/real_estate/serializer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

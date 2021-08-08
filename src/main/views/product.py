@@ -49,11 +49,12 @@ class ProductAddView(APIView):
                                           ''.join(random.choices(
                                               string.ascii_uppercase + string.ascii_lowercase + string.digits,
                                               k=6))
-        print(request.data)
         s = ProductAddSerializer(data=request.data)
         s.is_valid(raise_exception=True)
         s.save()
         return Response(status=201)
+
+
 class ProductView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -65,11 +66,10 @@ class ProductView(APIView):
                          k=6))
         s = request.data['product']['subcategory'].capitalize()
         exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
-        print(request.data)
         serializer = eval(f"{s}AddSerializer(data=request.data)")
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(status=201)
+        return Response(status=201, data=request.data['product']['slug'])
 
     def patch(self, request, *args, **kwargs):
         kwargs['subcategory'] = kwargs['subcategory'].capitalize()
@@ -93,6 +93,14 @@ class ProductView(APIView):
     def delete(self, request, *args, **kwargs):
         get_object_or_404(Product, pk=kwargs['slug'], author=request.user).delete()
         return Response(status=204)
+
+
+class UploadImageView(APIView):
+    def post(self, request, slug):
+        obj = get_object_or_404(Product, slug=slug)
+        obj.image = request.data['image']
+        obj.save()
+        return Response(status=201)
 
 
 class ProductSearchView(ListAPIView):
