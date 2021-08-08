@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.text import slugify
 from rest_framework import filters
 from rest_framework.generics import ListAPIView, get_object_or_404
-from rest_framework.parsers import FormParser
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -99,7 +99,7 @@ class ProductView(APIView):
 
 class UploadImageView(APIView):
     permission_classes = (IsAuthenticated,)
-    parser_classes = (FormParser,)
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     def post(self, request, slug):
         obj = get_object_or_404(Product, slug=slug)
         print(request.data)
