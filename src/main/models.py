@@ -27,8 +27,12 @@ class Subcategory(BaseCategory):
     parent = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="child")
 
 
+def upload_to(instance, filename):
+    return f'posts/{filename}'
+
+
 class Product(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to=upload_to)
     title = models.CharField(max_length=150)
     slug = models.SlugField(primary_key=True)
     description = models.TextField()
