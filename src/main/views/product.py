@@ -40,7 +40,19 @@ class ProductGetView(APIView):
         exec(f'from {kwargs["category"]}.serializer import {s}Serializer')
         return eval(f'Response({s}Serializer(obj).data)')
 
+class ProductAddView(APIView):
+    permission_classes = (IsAuthenticated,)
 
+    def post(self, request, *args, **kwargs):
+        request.data['author'] = request.user.id
+        request.data['slug'] = slugify(request.data['title']) + \
+                                          ''.join(random.choices(
+                                              string.ascii_uppercase + string.ascii_lowercase + string.digits,
+                                              k=6))
+        s = ProductAddSerializer(data=request.data)
+        s.is_valid(raise_exception=True)
+        s.save()
+        return Response(status=201)
 class ProductView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -88,4 +100,5 @@ class ProductSearchView(ListAPIView):
     serializer_class = ProductListSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(draft=False).select_related('subcategory')
+        return Product.objects.filter(draft=False).select_related('subcategory')\
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))

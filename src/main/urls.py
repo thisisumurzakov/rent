@@ -3,10 +3,11 @@ from django.urls import path
 from .views.review import ReviewAddView, ReviewListView
 from .views.rating import AddStarRatingView, RatingCheckView
 from .views.category import CategoryListView, CategoryChildListView
-from .views.product import ProductListView, ProductView, ProductSearchView, ProductGetView
+from .views.product import ProductListView, ProductView, ProductSearchView, ProductGetView, ProductAddView
 
 
 urlpatterns = [
+    path('add/', ProductAddView.as_view()),
     path('rating/', AddStarRatingView.as_view()),
     path('rating/<slug:product>/', RatingCheckView.as_view()),
 
