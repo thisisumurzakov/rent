@@ -103,8 +103,12 @@ class UploadImageView(APIView):
     def post(self, request, slug):
         obj = get_object_or_404(Product, slug=slug)
         print(request.data)
+        print(obj)
+        print('*'*25)
         obj.image = request.FILES.get('image')
         obj.save()
+        print(obj)
+        print('*'*25)
         return Response(status=201)
 
 
