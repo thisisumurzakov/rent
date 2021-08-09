@@ -15,7 +15,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    phone_number =serializers.CharField()
+    phone_number = serializers.CharField()
     id = serializers.IntegerField()
 
 
