@@ -114,7 +114,9 @@ class VerifySMSCodeView(APIView):
 
 class LogInSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
-        attrs = super().validate(attrs)
+        attrs = super(LogInSerializer, self).validate(attrs)
+        # Custom data you want to include
+        attrs.update({'id': self.user.id})
         return attrs
 
 class LogInView(TokenObtainPairView):

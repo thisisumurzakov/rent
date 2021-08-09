@@ -9,11 +9,18 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('image', 'title', 'slug', 'price', 'city', 'publish',
-                  'updated', 'subcategory', 'category', "avarege_star")
+                  'updated', 'subcategory', 'category', 'avarege_star')
+
+
+class AuthorSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    phone_number =serializers.CharField()
+    id = serializers.IntegerField()
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.__str__')
+    author = AuthorSerializer()
     class Meta:
         model = Product
         exclude = ('subcategory', 'draft')
