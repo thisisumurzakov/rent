@@ -65,7 +65,6 @@ class ProductView(APIView):
                      ''.join(random.choices(
                          string.ascii_uppercase + string.ascii_lowercase + string.digits,
                          k=6))
-        print(request.data)
         s = request.data['product']['subcategory'].capitalize()
         exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
         serializer = eval(f"{s}AddSerializer(data=request.data)")
@@ -102,13 +101,8 @@ class UploadImageView(APIView):
     parser_classes = (MultiPartParser, FormParser, JSONParser)
     def post(self, request, slug):
         obj = get_object_or_404(Product, slug=slug)
-        print(request.data)
-        print(obj.image)
-        print('*'*25)
         obj.image = request.FILES.get('image')
         obj.save()
-        print(obj.image)
-        print('*'*25)
         return Response(status=201)
 
 
