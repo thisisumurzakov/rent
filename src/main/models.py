@@ -20,7 +20,7 @@ class City(BaseCategory):
 
 
 class Category(BaseCategory):
-    pass
+    icon = models.CharField(max_length=20, null=True)
 
 
 class Subcategory(BaseCategory):
