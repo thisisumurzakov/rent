@@ -35,7 +35,7 @@ def generate_code():
 
 
 def generate_uuid():
-    return uuid.uuid4()
+        return uuid.uuid4()
 
 
 def set_cache(key, val, ttl=300):
@@ -85,10 +85,8 @@ class SignUpView(APIView):
                 status=status.HTTP_409_CONFLICT,
             )
         generated_code = generate_code()
-        print('*'*25)
         response = send_sms(phone_number, generated_code)
         if not response.ok:
-            print('Akbar '*25)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         data["password"] = make_password(data["password"])
         set_cache(phone_number, data)

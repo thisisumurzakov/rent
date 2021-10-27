@@ -10,6 +10,7 @@ urlpatterns = [
     path('v1/', include('main.urls')),
     path('accounts/', include('accounts.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 urlpatterns += doc_url
