@@ -1,7 +1,7 @@
 import random
 import string
 
-from django.db import models
+from django.db import models, transaction
 from django.utils.text import slugify
 from rest_framework import filters
 from rest_framework.generics import ListAPIView, get_object_or_404
@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 
 from .pagination import Pagination
 from ..models import Product, Subcategory, Rating
-from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer
+from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer, MediaAddSerializer
 
 
 class ProductListView(ListAPIView):
@@ -60,17 +60,30 @@ class ProductView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        request.data['product']['author'] = request.user.id
-        request.data['product']['slug'] = slugify(request.data['product']['title'])+ \
-                     ''.join(random.choices(
-                         string.ascii_uppercase + string.ascii_lowercase + string.digits,
-                         k=6))
-        s = request.data['product']['subcategory'].capitalize()
-        exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
-        serializer = eval(f"{s}AddSerializer(data=request.data)")
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(status=201, data=request.data['product']['slug'])
+        media = []
+        if 'media[]' in request.data:
+            media = request.data.pop('media[]')
+            if len(media)>5:
+                return Response(status=400)
+        with transaction.atomic():
+            try:
+                request.data['product']['author'] = request.user.id
+                request.data['product']['slug'] = slugify(request.data['product']['title'])+ \
+                             ''.join(random.choices(
+                                 string.ascii_uppercase + string.ascii_lowercase + string.digits,
+                                 k=6))
+                s = request.data['product']['subcategory'].capitalize()
+                exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
+                serializer = eval(f"{s}AddSerializer(data=request.data)")
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                for m in media:
+                    ms = MediaAddSerializer(data={"media": m, "post": s.id})
+                    ms.is_valid(raise_exception=True)
+                    ms.save()
+                return Response(status=201, data=request.data['product']['slug'])
+            except ValueError:
+                return Response(status=400, data="Key error")
 
     def patch(self, request, *args, **kwargs):
         kwargs['subcategory'] = kwargs['subcategory'].capitalize()

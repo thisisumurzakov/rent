@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Subcategory, City, Product, Rating, RatingStar, Review
+from .models import Category, Subcategory, City, Product, Rating, RatingStar, Review, Media
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
@@ -15,3 +15,4 @@ admin.site.register(Product)
 admin.site.register(Rating)
 admin.site.register(RatingStar)
 admin.site.register(Review)
+admin.site.register(Media)

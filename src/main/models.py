@@ -32,7 +32,6 @@ def upload_to(instance, filename):
 
 
 class Product(models.Model):
-    image = models.ImageField(upload_to=upload_to, blank=True, null=True)
     title = models.CharField(max_length=150)
     slug = models.SlugField(primary_key=True)
     description = models.TextField()
@@ -53,6 +52,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Media(models.Model):
+    media = models.FileField(upload_to='media/')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='media')
 
 
 class Review(models.Model):
