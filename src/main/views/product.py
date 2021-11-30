@@ -15,6 +15,16 @@ from ..models import Product, Subcategory, Rating
 from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer, MediaAddSerializer
 
 
+class MainPageProductListView(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = ProductListSerializer
+    pagination_class = Pagination
+    def get_queryset(self):
+        return Product.objects.filter(draft=False).order_by('-publish')\
+            .select_related('subcategory__parent')\
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+
+
 class ProductListView(ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ProductListSerializer
@@ -28,9 +38,15 @@ class ProductListView(ListAPIView):
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
-# class ProductPageRandomListView(ListAPIView):
-#     permission_classes = (AllowAny,)
-#     serializer_class =
+class MyProductsView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProductListSerializer
+    pagination_class = Pagination
+
+    def get_queryset(self):
+        return Product.objects.filter(author=self.request.user)\
+            .select_related('subcategory__parent')\
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
 class ProductGetView(APIView):
