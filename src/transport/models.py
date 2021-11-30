@@ -115,7 +115,7 @@ class Special(models.Model):
     mileage = models.IntegerField() #probeg
 
 
-class Other(models.Model):
+class Other_t(models.Model):
     FUEL_TYPE = (
         ('benzin', 'benzin'),
         ('elektr', 'elektr'),

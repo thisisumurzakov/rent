@@ -31,7 +31,7 @@ class Vacation_home(models.Model):
     floor = models.PositiveSmallIntegerField()
 
 
-class Other(models.Model):
+class Other_r(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='real_estate')
     total_area = models.PositiveSmallIntegerField()
     rooms = models.PositiveSmallIntegerField()
