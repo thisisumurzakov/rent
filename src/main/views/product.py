@@ -28,6 +28,11 @@ class ProductListView(ListAPIView):
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
+class ProductPageRandomListView(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class =
+
+
 class ProductGetView(APIView):
     permission_classes = (AllowAny,)
 
@@ -60,11 +65,6 @@ class ProductView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        media = []
-        if 'media[]' in request.data:
-            media = request.data.pop('media[]')
-            if len(media)>5:
-                return Response(status=400)
         with transaction.atomic():
             try:
                 request.data['product']['author'] = request.user.id
@@ -77,17 +77,13 @@ class ProductView(APIView):
                 serializer = eval(f"{s}AddSerializer(data=request.data)")
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
-                for m in media:
-                    ms = MediaAddSerializer(data={"media": m, "post": s.id})
-                    ms.is_valid(raise_exception=True)
-                    ms.save()
                 return Response(status=201, data=request.data['product']['slug'])
-            except ValueError:
+            except KeyError:
                 return Response(status=400, data="Key error")
 
     def patch(self, request, *args, **kwargs):
         kwargs['subcategory'] = kwargs['subcategory'].capitalize()
-        if request.data["product"]:
+        if "product" in request.data:
             p = get_object_or_404(Product, pk=kwargs['slug'], author=request.user)
             s = ProductAddSerializer(p, data=request.data["product"],partial=True)
             s.is_valid(raise_exception=True)
@@ -113,10 +109,18 @@ class UploadImageView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser, JSONParser)
     def post(self, request, slug):
-        obj = get_object_or_404(Product, slug=slug)
-        obj.image = request.FILES.get('image')
-        obj.save()
-        return Response(status=201)
+        media = []
+        print(request.data)
+        if 'media[]' in request.data:
+            media = request.data.pop('media[]')
+            if len(media) > 5:
+                return Response(status=400)
+            for m in media:
+                ms = MediaAddSerializer(data={"media": m, "product": slug})
+                ms.is_valid(raise_exception=True)
+                ms.save()
+            return Response(status=201)
+        return Response(status=400)
 
 
 class ProductSearchView(ListAPIView):

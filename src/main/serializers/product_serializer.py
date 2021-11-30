@@ -46,4 +46,4 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        exclude = ('publish', 'created', 'updated', 'image')
+        exclude = ('publish', 'created', 'updated')

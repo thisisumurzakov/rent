@@ -44,6 +44,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     draft = models.BooleanField(default=False)
+    location = models.CharField(max_length=100)
 
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_related")
 

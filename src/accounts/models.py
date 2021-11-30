@@ -1,7 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
-
 from phonenumber_field.modelfields import PhoneNumberField
 
 import uuid
@@ -42,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "unique": "User with this phone number already exists."
         },
     )
+    email = models.EmailField('email address', blank=True)
     first_name = models.CharField("first name", max_length=150, blank=True)
     last_name = models.CharField("last name", max_length=150, blank=True)
     date_joined = models.DateTimeField("date joined", auto_now_add=True)
