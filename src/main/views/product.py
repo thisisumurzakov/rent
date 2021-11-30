@@ -28,9 +28,9 @@ class ProductListView(ListAPIView):
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
-class ProductPageRandomListView(ListAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class =
+# class ProductPageRandomListView(ListAPIView):
+#     permission_classes = (AllowAny,)
+#     serializer_class =
 
 
 class ProductGetView(APIView):
