@@ -148,3 +148,22 @@ class ProductSearchView(ListAPIView):
     def get_queryset(self):
         return Product.objects.filter(draft=False).select_related('subcategory')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+
+
+class FavouriteView(APIView):
+    permission_classes = (IsAuthenticated,)
+    pagination_class = Pagination
+
+    def get(self, request):
+        return Response(status=200, data=
+        ProductListSerializer(request.user.fav_posts.all()\
+            .select_related('subcategory__parent')\
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings'))), many=True).data)
+
+    def post(self, request):
+        Product.objects.get(slug=request.data['slug']).favourite.add(request.user)
+        return Response(status=200)
+
+    def delete(self, request):
+        Product.objects.get(slug=request.data['slug']).favourite.remove(request.user)
+        return Response(status=200)

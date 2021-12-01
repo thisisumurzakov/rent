@@ -4,7 +4,8 @@ from .views.review import ReviewAddView, ReviewListView
 from .views.rating import AddStarRatingView, RatingCheckView
 from .views.category import CategoryListView, CategoryChildListView
 from .views.product import (ProductListView, ProductView, ProductSearchView,
-                            ProductGetView, ProductAddView, UploadImageView, MyProductsView, MainPageProductListView)
+                            ProductGetView, ProductAddView, UploadImageView, MyProductsView, MainPageProductListView,
+                            FavouriteView)
 
 
 urlpatterns = [
@@ -23,7 +24,8 @@ urlpatterns = [
     path('product/update/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductView.as_view()),
     path('product/delete/<slug:slug>/', ProductView.as_view()),
     path('product/search/', ProductSearchView.as_view()),
-    path('upload_image/<slug:slug>', UploadImageView.as_view()),
+    path('upload_image/<slug:slug>/', UploadImageView.as_view()),
+    path('favourite/', FavouriteView.as_view()),
 
     path('review/add/<slug:product>/', ReviewAddView.as_view()),
     path('review/list/<slug:product>/', ReviewListView.as_view()),
