@@ -18,49 +18,49 @@ class flatFilter(filters.FilterSet):
 class officeFilter(filters.FilterSet):
     min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
     max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
-    min_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='gte')
-    max_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='lte')
+    min_area = filters.NumberFilter(field_name="offices__total_area", lookup_expr='gte')
+    max_area = filters.NumberFilter(field_name="offices__total_area", lookup_expr='lte')
     search = filters.CharFilter(field_name="title", lookup_expr="icontains")
 
     class Meta:
         model = Product
-        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'flats__rooms', 'flats__floor']
+        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'offices__rooms', 'offices__floor']
 
 
 class other_rFilter(filters.FilterSet):
     min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
     max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
-    min_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='gte')
-    max_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='lte')
+    min_area = filters.NumberFilter(field_name="other_rs__total_area", lookup_expr='gte')
+    max_area = filters.NumberFilter(field_name="other_rs__total_area", lookup_expr='lte')
     search = filters.CharFilter(field_name="title", lookup_expr="icontains")
 
     class Meta:
         model = Product
-        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'flats__rooms', 'flats__floor']
+        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'other_rs__rooms', 'other_rs__floor']
 
 
 class sectorFilter(filters.FilterSet):
     min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
     max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
-    min_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='gte')
-    max_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='lte')
+    min_area = filters.NumberFilter(field_name="sectors__total_area", lookup_expr='gte')
+    max_area = filters.NumberFilter(field_name="sectors__total_area", lookup_expr='lte')
     search = filters.CharFilter(field_name="title", lookup_expr="icontains")
 
     class Meta:
         model = Product
-        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'flats__rooms', 'flats__floor']
+        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'sectors__rooms', 'sectors__floor']
 
 
 class vacation_homeFilter(filters.FilterSet):
     min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
     max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
-    min_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='gte')
-    max_area = filters.NumberFilter(field_name="flats__total_area", lookup_expr='lte')
+    min_area = filters.NumberFilter(field_name="vacation_homes__total_area", lookup_expr='gte')
+    max_area = filters.NumberFilter(field_name="vacation_homes__total_area", lookup_expr='lte')
     search = filters.CharFilter(field_name="title", lookup_expr="icontains")
 
     class Meta:
         model = Product
-        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'flats__rooms', 'flats__floor']
+        fields = ['search', 'min_price', 'max_price', 'min_area', 'max_area', 'city', 'vacation_homes__rooms', 'vacation_homes__floor']
 
 
 class carFilter(filters.FilterSet):
@@ -78,7 +78,7 @@ class truckFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['title', 'min_price', 'max_price', 'city', 'cars__color', 'cars__fuel_type', 'cars__mileage', 'cars__transmission']
+        fields = ['title', 'min_price', 'max_price', 'city', 'trucks__color', 'trucks__fuel_type', 'trucks__mileage', 'trucks__transmission']
 
 
 class agriculturalFilter(filters.FilterSet):
@@ -87,7 +87,7 @@ class agriculturalFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['title', 'min_price', 'max_price', 'city', 'cars__color', 'cars__fuel_type', 'cars__mileage', 'cars__transmission']
+        fields = ['title', 'min_price', 'max_price', 'city', 'agriculturals__color', 'agriculturals__fuel_type', 'agriculturals__mileage', 'agriculturals__transmission']
 
 
 class specialFilter(filters.FilterSet):
@@ -96,7 +96,7 @@ class specialFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['title', 'min_price', 'max_price', 'city', 'cars__color', 'cars__fuel_type', 'cars__mileage', 'cars__transmission']
+        fields = ['title', 'min_price', 'max_price', 'city', 'specials__color', 'specials__fuel_type', 'specials__mileage', 'specials__transmission']
 
 
 class other_tFilter(filters.FilterSet):
@@ -105,4 +105,4 @@ class other_tFilter(filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['title', 'min_price', 'max_price', 'city', 'cars__color', 'cars__fuel_type', 'cars__mileage', 'cars__transmission']
+        fields = ['title', 'min_price', 'max_price', 'city', 'other_ts__color', 'other_ts__fuel_type', 'other_ts__mileage', 'other_ts__transmission']
