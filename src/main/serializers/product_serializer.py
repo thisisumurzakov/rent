@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 from ..models import Product, Media
 
@@ -43,7 +44,8 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         exclude = ('subcategory', 'draft')
 
-class ProductAddSerializer(serializers.ModelSerializer):
+class ProductAddSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
     class Meta:
         model = Product
         exclude = ('publish', 'created', 'updated')

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from accounts.models import User
+from taggit.managers import TaggableManager
 
 
 class BaseCategory(models.Model):
@@ -33,7 +34,7 @@ def upload_to(instance, filename):
 
 class Product(models.Model):
     title = models.CharField(max_length=150)
-    slug = models.SlugField(primary_key=True)
+    slug = models.SlugField(unique=True)
     description = models.TextField()
     price = models.PositiveIntegerField()
     views = models.PositiveIntegerField(default=0)
@@ -47,6 +48,7 @@ class Product(models.Model):
     location = models.CharField(max_length=100)
     favourite = models.ManyToManyField(User, related_name="fav_posts", blank=True)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_related")
+    tags = TaggableManager()
 
     class Meta:
         ordering = ('-publish',)

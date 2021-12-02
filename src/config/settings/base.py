@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "debug_toolbar",
     "drf_yasg",
+    "taggit",
 ]
 
 LOCAL_APPS = [

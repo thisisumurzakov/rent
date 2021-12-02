@@ -4,12 +4,12 @@ from .views.review import ReviewAddView, ReviewListView
 from .views.rating import AddStarRatingView, RatingCheckView
 from .views.category import CategoryListView, CategoryChildListView
 from .views.product import (ProductListView, ProductView, ProductSearchView,
-                            ProductGetView, ProductAddView, UploadImageView, MyProductsView, MainPageProductListView,
-                            FavouriteView)
+                            ProductGetView, UploadImageView, MyProductsView, MainPageProductListView,
+                            FavouriteView, SimilarProductListView)
 
 
 urlpatterns = [
-    path('add/', ProductAddView.as_view()),
+    #path('add/', ProductAddView.as_view()),
     path('rating/', AddStarRatingView.as_view()),
     path('rating/<slug:product>/', RatingCheckView.as_view()),
 
@@ -26,6 +26,7 @@ urlpatterns = [
     path('search/<slug:subcategory>/', ProductSearchView.as_view()),
     path('upload_image/<slug:slug>/', UploadImageView.as_view()),
     path('favorite/', FavouriteView.as_view()),
+    path('similar/<slug:subcategory>/<slug:slug>/', SimilarProductListView.as_view()),
 
     path('review/add/<slug:product>/', ReviewAddView.as_view()),
     path('review/list/<slug:product>/', ReviewListView.as_view()),

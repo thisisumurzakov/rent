@@ -2,6 +2,7 @@ import random
 import string
 
 from django.db import models, transaction
+from django.db.models import Q
 from django.utils.text import slugify
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
@@ -62,19 +63,19 @@ class ProductGetView(APIView):
         exec(f'from {kwargs["category"]}.serializer import {s}Serializer')
         return eval(f'Response({s}Serializer(obj).data)')
 
-class ProductAddView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request, *args, **kwargs):
-        request.data['author'] = request.user.id
-        request.data['slug'] = slugify(request.data['title']) + \
-                                          ''.join(random.choices(
-                                              string.ascii_uppercase + string.ascii_lowercase + string.digits,
-                                              k=6))
-        s = ProductAddSerializer(data=request.data)
-        s.is_valid(raise_exception=True)
-        s.save()
-        return Response(status=201)
+# class ProductAddView(APIView):
+#     permission_classes = (IsAuthenticated,)
+#
+#     def post(self, request, *args, **kwargs):
+#         request.data['author'] = request.user.id
+#         request.data['slug'] = slugify(request.data['title']) + \
+#                                           ''.join(random.choices(
+#                                               string.ascii_uppercase + string.ascii_lowercase + string.digits,
+#                                               k=6))
+#         s = ProductAddSerializer(data=request.data)
+#         s.is_valid(raise_exception=True)
+#         s.save()
+#         return Response(status=201)
 
 
 class ProductView(APIView):
@@ -172,3 +173,13 @@ class FavouriteView(APIView):
     def delete(self, request):
         Product.objects.get(slug=request.data['slug']).favourite.remove(request.user)
         return Response(status=200)
+
+
+class SimilarProductListView(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = ProductListSerializer
+    pagination_class = Pagination
+    def get_queryset(self):
+        return Product.objects.filter(~Q(slug=self.kwargs['slug']),draft=False, tags__name__in=self.request.data['tags'], subcategory=self.kwargs['subcategory']).distinct().order_by('-publish')\
+            .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
