@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from main.serializers.product_serializer import ProductSerializer, ProductAddSerializer
-from .models import Car, Truck, Agricultural, Special, Other
+from .models import Car, Truck, Agricultural, Special, Other_t
 from ..main.models import Product
 
 
@@ -85,21 +85,21 @@ class SpecialAddSerializer(serializers.ModelSerializer):
         return instance
 
 
-class OtherSerializer(serializers.ModelSerializer):
+class Other_tSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     class Meta:
-        model = Other
+        model = Other_t
         exclude = ('id',)
 
 
-class OtherAddSerializer(serializers.ModelSerializer):
+class Other_tAddSerializer(serializers.ModelSerializer):
     product = ProductAddSerializer()
     class Meta:
-        model = Other
+        model = Other_t
         exclude = ('id',)
 
     def create(self, validated_data):
         product = Product.objects.create(**validated_data.pop('product'))
-        instance = Other.objects.create(**validated_data, product=product)
+        instance = Other_t.objects.create(**validated_data, product=product)
         instance.save()
         return instance

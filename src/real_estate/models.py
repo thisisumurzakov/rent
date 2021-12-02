@@ -32,7 +32,7 @@ class Vacation_home(models.Model):
 
 
 class Other_r(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='real_estate')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='other_rs')
     total_area = models.PositiveSmallIntegerField()
     rooms = models.PositiveSmallIntegerField()
     floor = models.PositiveSmallIntegerField()

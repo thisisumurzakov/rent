@@ -23,7 +23,7 @@ urlpatterns = [
     path('product/add/<slug:category>/', ProductView.as_view()),
     path('product/update/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductView.as_view()),
     path('product/delete/<slug:slug>/', ProductView.as_view()),
-    path('product/search/', ProductSearchView.as_view()),
+    path('search/<slug:subcategory>/', ProductSearchView.as_view()),
     path('upload_image/<slug:slug>/', UploadImageView.as_view()),
     path('favorite/', FavouriteView.as_view()),
 

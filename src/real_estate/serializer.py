@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from main.serializers.product_serializer import ProductSerializer, ProductAddSerializer
 from main.models import Product
-from .models import Flat, Office, Sector, Vacation_home, Other
+from .models import Flat, Office, Sector, Vacation_home, Other_r
 
 
 class FlatSerializer(serializers.ModelSerializer):
@@ -81,20 +81,20 @@ class Vacation_homeAddSerializer(serializers.ModelSerializer):
         return instance
 
 
-class OtherSerializer(serializers.ModelSerializer):
+class Other_rSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     class Meta:
-        model = Other
+        model = Other_r
         exclude = ('id',)
 
-class OtherAddSerializer(serializers.ModelSerializer):
+class Other_rAddSerializer(serializers.ModelSerializer):
     product = ProductAddSerializer()
     class Meta:
-        model = Other
+        model = Other_r
         fields = '__all__'
 
     def create(self, validated_data):
         product = Product.objects.create(**validated_data.pop('product'))
-        instance = Other.objects.create(**validated_data, product=product)
+        instance = Other_r.objects.create(**validated_data, product=product)
         instance.save()
         return instance

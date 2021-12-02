@@ -16,15 +16,15 @@ class MediaAddSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    category = serializers.SlugField(source="subcategory.parent.slug")
     avarege_star = serializers.IntegerField()
-    media = serializers.SerializerMethodField()
+    media = MediaSerializer(many=True, read_only=True)
     class Meta:
         model = Product
         fields = ('media', 'title', 'slug', 'price', 'city', 'publish',
-                  'updated', 'subcategory', 'category', 'avarege_star')
+                  'updated', 'subcategory', 'avarege_star')
 
     def get_media(self, instance):
+        print(self)
         image = instance.media.first()
         return MediaSerializer(image).data
 

@@ -3,13 +3,15 @@ import string
 
 from django.db import models, transaction
 from django.utils.text import slugify
-from rest_framework import filters
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import filters as rest_filter
 
+from .filters import *
+from django_filters import rest_framework as filters
 from .pagination import Pagination
 from ..models import Product, Subcategory, Rating
 from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer, MediaAddSerializer
@@ -21,7 +23,7 @@ class MainPageProductListView(ListAPIView):
     pagination_class = Pagination
     def get_queryset(self):
         return Product.objects.filter(draft=False).order_by('-publish')\
-            .select_related('subcategory__parent')\
+            .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
@@ -31,10 +33,8 @@ class ProductListView(ListAPIView):
     pagination_class = Pagination
 
     def get_queryset(self):
-        s = get_object_or_404(Subcategory, slug=self.kwargs["subcategory"],
-                              parent=self.kwargs["category"])
-        return Product.objects.filter(subcategory=s, draft=False)\
-            .select_related('subcategory__parent')\
+        return Product.objects.filter(subcategory=self.kwargs["subcategory"], draft=False)\
+            .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
@@ -45,7 +45,7 @@ class MyProductsView(ListAPIView):
 
     def get_queryset(self):
         return Product.objects.filter(author=self.request.user)\
-            .select_related('subcategory__parent')\
+            .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
@@ -141,12 +141,17 @@ class UploadImageView(APIView):
 
 class ProductSearchView(ListAPIView):
     permission_classes = (AllowAny,)
-    search_fields = ["title"]
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (filters.DjangoFilterBackend,)
     serializer_class = ProductListSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(draft=False).select_related('subcategory')\
+        if self.kwargs["subcategory"] == "all":
+            self.filter_backends = (rest_filter.SearchFilter,)
+            return Product.objects.filter(draft=False).select_related('subcategory')\
+                .select_related('city').prefetch_related('media') \
+                .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+        self.filterset_class = eval(f'{self.kwargs["subcategory"]}Filter')
+        return Product.objects.filter(draft=False, subcategory=self.kwargs["subcategory"]).select_related('subcategory').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 

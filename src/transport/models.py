@@ -126,7 +126,7 @@ class Other_t(models.Model):
         ('mexanika', 'mexanika'),
         ('avtomat', 'avtomat')
     )
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='transport')
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='other_ts')
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True)
     model = models.ForeignKey(Model, on_delete=models.SET_NULL, null=True)
     color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True)
