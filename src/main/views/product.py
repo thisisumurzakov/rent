@@ -58,7 +58,7 @@ class ProductGetView(APIView):
                           parent=kwargs["category"])
         s = kwargs["subcategory"].capitalize()
         exec(f'from {kwargs["category"]}.models import {s}')
-        obj = eval(f'get_object_or_404({s}.objects.select_related("product"), product=kwargs["slug"],'
+        obj = eval(f'get_object_or_404({s}.objects.select_related("product"), product__slug=kwargs["slug"],'
                    f'product__subcategory=kwargs["subcategory"], product__draft=False)')
         exec(f'from {kwargs["category"]}.serializer import {s}Serializer')
         return eval(f'Response({s}Serializer(obj).data)')
@@ -109,7 +109,7 @@ class ProductView(APIView):
         if request.data:
             exec(f"from {kwargs['category']}.models import {kwargs['subcategory']}")
             obj = eval(
-                f"get_object_or_404({kwargs['subcategory']}.objects.select_related('product'), product=kwargs['slug'], product__author=request.user)")
+                f"get_object_or_404({kwargs['subcategory']}.objects.select_related('product'), product__slug=kwargs['slug'], product__author=request.user)")
             exec(f"from {kwargs['category']}.serializer import {kwargs['subcategory']}AddSerializer")
             s = eval(f"{kwargs['subcategory']}AddSerializer(obj, data=request.data, partial=True)")
             s.is_valid(raise_exception=True)
@@ -142,15 +142,16 @@ class UploadImageView(APIView):
 
 class ProductSearchView(ListAPIView):
     permission_classes = (AllowAny,)
-    filter_backends = (filters.DjangoFilterBackend,)
     serializer_class = ProductListSerializer
 
     def get_queryset(self):
         if self.kwargs["subcategory"] == "all":
             self.filter_backends = (rest_filter.SearchFilter,)
+            self.lookup_field = ["title"]
             return Product.objects.filter(draft=False).select_related('subcategory')\
                 .select_related('city').prefetch_related('media') \
                 .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+        self.filter_backends = (filters.DjangoFilterBackend,)
         self.filterset_class = eval(f'{self.kwargs["subcategory"]}Filter')
         return Product.objects.filter(draft=False, subcategory=self.kwargs["subcategory"]).select_related('subcategory').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
