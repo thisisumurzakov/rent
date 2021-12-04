@@ -134,6 +134,7 @@ class UploadImageView(APIView):
                 return Response(status=400)
             product = get_object_or_404(Product, slug=slug)
             for m in media:
+                print('1')
                 ms = MediaAddSerializer(data={"media": m, "product": product.id})
                 ms.is_valid(raise_exception=True)
                 ms.save()
