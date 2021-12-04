@@ -140,19 +140,25 @@ class UploadImageView(APIView):
         return Response(status=400)
 
 
-class ProductSearchView(ListAPIView):
-    permission_classes = (AllowAny,)
+class SearchAllView(ListAPIView):
+    search_fields = ["title"]
+    filter_backends = (rest_filter.SearchFilter,)
+    pagination_class = Pagination
     serializer_class = ProductListSerializer
 
     def get_queryset(self):
-        if self.kwargs["subcategory"] == "all":
-            self.filter_backends = (rest_filter.SearchFilter,)
-            self.lookup_field = ["title"]
-            return Product.objects.filter(draft=False).select_related('subcategory')\
-                .select_related('city').prefetch_related('media') \
-                .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
-        self.filter_backends = (filters.DjangoFilterBackend,)
-        self.filterset_class = eval(f'{self.kwargs["subcategory"]}Filter')
+        return Product.objects.filter(draft=False).select_related('subcategory') \
+            .select_related('city').prefetch_related('media') \
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+
+
+class ProductSearchView(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = ProductListSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+
+    def get_queryset(self):
+        filterset_class = eval(f'{self.kwargs["subcategory"]}Filter')
         return Product.objects.filter(draft=False, subcategory=self.kwargs["subcategory"]).select_related('subcategory').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
