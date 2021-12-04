@@ -126,7 +126,6 @@ class UploadImageView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser, JSONParser)
     def post(self, request, slug):
-        media = []
         print(request.data)
         if 'media[]' in request.data:
             media = request.data.pop('media[]')
@@ -134,7 +133,6 @@ class UploadImageView(APIView):
                 return Response(status=400)
             product = get_object_or_404(Product, slug=slug)
             for m in media:
-                print('1')
                 ms = MediaAddSerializer(data={"media": m, "product": product.id})
                 ms.is_valid(raise_exception=True)
                 ms.save()
