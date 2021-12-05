@@ -1,8 +1,32 @@
 from rest_framework import serializers
 
 from main.serializers.product_serializer import ProductSerializer, ProductAddSerializer
-from .models import Car, Truck, Agricultural, Special, Other_t
-from ..main.models import Product
+from .models import Car, Truck, Agricultural, Special, Other_t, Brand, Model, Color, BodyType
+from main.models import Product
+
+
+class BrandListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = '__all__'
+
+
+class ModelListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Model
+        exclude = ('brand', )
+
+
+class ColorListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Color
+        fields = '__all__'
+
+
+class BodyTypeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BodyType
+        fields = '__all__'
 
 
 class CarSerializer(serializers.ModelSerializer):

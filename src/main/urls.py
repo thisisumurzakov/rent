@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views.review import ReviewAddView, ReviewListView
 from .views.rating import AddStarRatingView, RatingCheckView
@@ -16,6 +16,8 @@ urlpatterns = [
     path('category/', CategoryListView.as_view()),
     path('category/<slug:slug>/', CategoryChildListView.as_view()),
     path('city/', CityListView.as_view()),
+    path('transport/', include('transport.urls')),
+
 
     path('main/', MainPageProductListView.as_view()),
     path('my/', MyProductsView.as_view()),

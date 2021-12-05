@@ -4,7 +4,7 @@ from main.models import Product, BaseCategory
 
 
 class Brand(BaseCategory):
-    pass
+    icon = models.ImageField(upload_to='subcategory/', null=True, blank=True)
 
 
 class Model(BaseCategory):
@@ -13,7 +13,7 @@ class Model(BaseCategory):
 
 
 class BodyType(BaseCategory):
-    pass
+    icon = models.ImageField(upload_to='subcategory/', null=True, blank=True)
 
 
 class Color(BaseCategory):
