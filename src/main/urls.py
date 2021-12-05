@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('category/', CategoryListView.as_view()),
     path('category/<slug:slug>/', CategoryChildListView.as_view()),
+    path('city/', CityListView.as_view()),
 
     path('main/', MainPageProductListView.as_view()),
     path('my/', MyProductsView.as_view()),
