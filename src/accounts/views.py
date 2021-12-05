@@ -259,7 +259,6 @@ class UserProfileAPIView(RetrieveAPIView):
     http_method_names = ["get"]
     permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer
-    queryset = User.objects.all()
 
     def get_object(self):
         return User.objects.filter(guid=self.request.user.guid)
