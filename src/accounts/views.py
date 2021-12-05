@@ -255,13 +255,14 @@ class UserPasswordUpdateView(APIView):
         request.user.save()
         return Response(status=status.HTTP_200_OK)
 
-class UserProfileAPIView(RetrieveAPIView):
+
+class UserProfileAPIView(APIView):
     http_method_names = ["get"]
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserProfileSerializer
 
-    def get_object(self):
-        return User.objects.filter(guid=self.request.user.guid)
+    def get(self, request):
+        return Response(status=200, data=UserProfileSerializer(request.user).data)
+
 
 class UserProfileUpdateView(UpdateAPIView):
     http_method_names = ["put"]
