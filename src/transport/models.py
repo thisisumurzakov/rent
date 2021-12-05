@@ -8,7 +8,8 @@ class Brand(BaseCategory):
 
 
 class Model(BaseCategory):
-    pass
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, null=True, blank=True)
+
 
 
 class BodyType(BaseCategory):
