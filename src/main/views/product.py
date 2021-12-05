@@ -61,7 +61,12 @@ class ProductGetView(APIView):
         obj = eval(f'get_object_or_404({s}.objects.select_related("product"), product__slug=kwargs["slug"],'
                    f'product__subcategory=kwargs["subcategory"], product__draft=False)')
         exec(f'from {kwargs["category"]}.serializer import {s}Serializer')
-        return eval(f'Response({s}Serializer(obj).data)')
+        data = eval(f'{s}Serializer(obj).data')
+        if request.user in obj.product.favourite.all():
+            data["is_favourite"] = True
+        else:
+            data["is_favourite"] = False
+        return Response(data)
 
 # class ProductAddView(APIView):
 #     permission_classes = (IsAuthenticated,)

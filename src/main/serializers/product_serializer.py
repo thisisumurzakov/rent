@@ -42,7 +42,7 @@ class ProductSerializer(serializers.ModelSerializer):
     author = AuthorSerializer()
     class Meta:
         model = Product
-        exclude = ('subcategory', 'draft')
+        exclude = ('subcategory', 'draft', 'favourite')
 
 class ProductAddSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
