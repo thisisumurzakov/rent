@@ -21,11 +21,12 @@ class City(BaseCategory):
 
 
 class Category(BaseCategory):
-    icon = models.CharField(max_length=20, null=True)
+    icon = models.ImageField(upload_to='category/', null=True, blank=True)
 
 
 class Subcategory(BaseCategory):
     parent = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="child")
+    icon = models.ImageField(upload_to='subcategory/', null=True, blank=True)
 
 
 def upload_to(instance, filename):
