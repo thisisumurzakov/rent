@@ -34,7 +34,7 @@ class ProductListView(ListAPIView):
     pagination_class = Pagination
 
     def get_queryset(self):
-        return Product.objects.filter(subcategory=self.kwargs["subcategory"], draft=False)\
+        return Product.objects.filter(subcategory=self.kwargs["subcategory"], draft=False).order_by('-publish')\
             .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
@@ -45,7 +45,7 @@ class MyProductsView(ListAPIView):
     pagination_class = Pagination
 
     def get_queryset(self):
-        return Product.objects.filter(author=self.request.user)\
+        return Product.objects.filter(author=self.request.user).order_by('-publish')\
             .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
@@ -152,7 +152,7 @@ class SearchAllView(ListAPIView):
     serializer_class = ProductListSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(draft=False).select_related('subcategory') \
+        return Product.objects.filter(draft=False).order_by('-publish').select_related('subcategory')\
             .select_related('city').prefetch_related('media') \
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
@@ -164,7 +164,7 @@ class ProductSearchView(ListAPIView):
 
     def get_queryset(self):
         filterset_class = eval(f'{self.kwargs["subcategory"]}Filter')
-        return Product.objects.filter(draft=False, subcategory=self.kwargs["subcategory"]).select_related('subcategory').select_related('city').prefetch_related('media')\
+        return Product.objects.filter(draft=False, subcategory=self.kwargs["subcategory"]).order_by('-publish').select_related('subcategory').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
