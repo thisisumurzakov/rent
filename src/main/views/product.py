@@ -106,7 +106,7 @@ class ProductView(APIView):
     def patch(self, request, *args, **kwargs):
         kwargs['subcategory'] = kwargs['subcategory'].capitalize()
         if "product" in request.data:
-            p = get_object_or_404(Product, pk=kwargs['slug'], author=request.user)
+            p = get_object_or_404(Product, slug=kwargs['slug'], author=request.user)
             s = ProductAddSerializer(p, data=request.data["product"],partial=True)
             s.is_valid(raise_exception=True)
             s.save()
