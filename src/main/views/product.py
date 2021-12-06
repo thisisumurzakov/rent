@@ -123,7 +123,7 @@ class ProductView(APIView):
         return Response(status=201)
 
     def delete(self, request, *args, **kwargs):
-        get_object_or_404(Product, pk=kwargs['slug'], author=request.user).delete()
+        get_object_or_404(Product, slug=kwargs['slug'], author=request.user).delete()
         return Response(status=204)
 
 
