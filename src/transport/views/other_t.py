@@ -1,7 +1,6 @@
 import random
 import string
 
-from django.db import transaction
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
