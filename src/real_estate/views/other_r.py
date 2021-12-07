@@ -39,7 +39,7 @@ class Other_rView(APIView):
                                                            string.ascii_uppercase + string.ascii_lowercase + string.digits,
                                                            k=6))
         serializer.save()
-        return Response(status=201, data=request.data['product']['slug'])
+        return Response(status=201, data=serializer.validated_data['product']['slug'])
 
     def patch(self, request, *args, **kwargs):
         kwargs['subcategory'] = kwargs['subcategory'].capitalize()
