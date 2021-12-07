@@ -32,20 +32,15 @@ class Other_rView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        with transaction.atomic():
-            try:
-                request.data['product']['author'] = request.user.id
-                request.data['product']['slug'] = slugify(request.data['product']['title'])+ \
-                             ''.join(random.choices(
-                                 string.ascii_uppercase + string.ascii_lowercase + string.digits,
-                                 k=6))
-                s = request.data['product']['subcategory'].capitalize()
-                serializer = Other_rAddSerializer(data=request.data)
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(status=201, data=request.data['product']['slug'])
-            except KeyError:
-                return Response(status=400, data="Key error")
+        serializer = Other_rAddSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.validated_data['product']['author'] = request.user.id
+        serializer.validated_data['product']['slug'] = slugify(request.data['product']['title']) + \
+                                                       ''.join(random.choices(
+                                                           string.ascii_uppercase + string.ascii_lowercase + string.digits,
+                                                           k=6))
+        serializer.save()
+        return Response(status=201, data=request.data['product']['slug'])
 
     def patch(self, request, *args, **kwargs):
         kwargs['subcategory'] = kwargs['subcategory'].capitalize()
