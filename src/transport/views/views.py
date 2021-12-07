@@ -1,8 +1,8 @@
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny
 
-from .models import Brand, Model, Color, BodyType
-from .serializer import BrandListSerializer, ModelListSerializer, ColorListSerializer, BodyTypeListSerializer
+from ..models import Brand, Model, Color, BodyType
+from ..serializer import BrandListSerializer, ModelListSerializer, ColorListSerializer, BodyTypeListSerializer
 
 
 class BrandListView(ListAPIView):
