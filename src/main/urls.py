@@ -4,7 +4,7 @@ from .views.review import ReviewAddView, ReviewListView
 from .views.rating import AddStarRatingView, RatingCheckView
 from .views.category import CategoryListView, CategoryChildListView, CityListView
 from .views.product import (ProductListView, ProductView, ProductSearchView,
-                            ProductGetView, UploadImageView, MyProductsView, MainPageProductListView,
+                            UploadImageView, MyProductsView, MainPageProductListView,
                             FavouriteView, SimilarProductListView, SearchAllView)
 
 
