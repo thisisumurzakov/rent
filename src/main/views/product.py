@@ -50,23 +50,23 @@ class MyProductsView(ListAPIView):
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
 
-class ProductGetView(APIView):
-    permission_classes = (AllowAny,)
+# class ProductGetView(APIView):
+#     permission_classes = (AllowAny,)
 
-    def get(self, request, *args, **kwargs):
-        get_object_or_404(Subcategory, pk=kwargs["subcategory"],
-                          parent=kwargs["category"])
-        s = kwargs["subcategory"].capitalize()
-        exec(f'from {kwargs["category"]}.models import {s}')
-        obj = eval(f'get_object_or_404({s}.objects.select_related("product"), product__slug=kwargs["slug"],'
-                   f'product__subcategory=kwargs["subcategory"], product__draft=False)')
-        exec(f'from {kwargs["category"]}.serializer import {s}Serializer')
-        data = eval(f'{s}Serializer(obj).data')
-        if request.user in obj.product.favourite.all():
-            data["is_favourite"] = True
-        else:
-            data["is_favourite"] = False
-        return Response(data)
+#     def get(self, request, *args, **kwargs):
+#         get_object_or_404(Subcategory, pk=kwargs["subcategory"],
+#                           parent=kwargs["category"])
+#         s = kwargs["subcategory"].capitalize()
+#         exec(f'from {kwargs["category"]}.models import {s}')
+#         obj = eval(f'get_object_or_404({s}.objects.select_related("product"), product__slug=kwargs["slug"],'
+#                    f'product__subcategory=kwargs["subcategory"], product__draft=False)')
+#         exec(f'from {kwargs["category"]}.serializer import {s}Serializer')
+#         data = eval(f'{s}Serializer(obj).data')
+#         if request.user in obj.product.favourite.all():
+#             data["is_favourite"] = True
+#         else:
+#             data["is_favourite"] = False
+#         return Response(data)
 
 # class ProductAddView(APIView):
 #     permission_classes = (IsAuthenticated,)

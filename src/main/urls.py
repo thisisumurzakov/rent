@@ -22,10 +22,10 @@ urlpatterns = [
     path('real_estate/', include('real_estate.urls')),
     path('transport/', include('transport.urls')),
 
-    path('product/detail/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductGetView.as_view()),
+    #path('product/detail/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductGetView.as_view()),
     path('product/list/<slug:category>/<slug:subcategory>/', ProductListView.as_view()),
-    path('product/add/<slug:category>/', ProductView.as_view()),
-    path('product/update/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductView.as_view()),
+    #path('product/add/<slug:category>/', ProductView.as_view()),
+    #path('product/update/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductView.as_view()),
     path('product/delete/<slug:slug>/', ProductView.as_view()),
     path('search/all/', SearchAllView.as_view()),
     path('search/<slug:subcategory>/', ProductSearchView.as_view()),
