@@ -1,6 +1,7 @@
 import random
 import string
 
+from django.db import transaction
 from django.utils.text import slugify
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -42,17 +43,18 @@ class AgriculturalView(APIView):
         return Response(status=201, data=serializer.validated_data['product']['slug'])
 
     def patch(self, request, *args, **kwargs):
-        kwargs['subcategory'] = kwargs['subcategory'].capitalize()
-        if "product" in request.data:
-            p = get_object_or_404(Product, slug=kwargs['slug'], author=request.user)
-            s = ProductAddSerializer(p, data=request.data["product"],partial=True)
-            s.is_valid(raise_exception=True)
-            s.save()
-            request.data.pop('product')
-        if request.data:
-            obj = get_object_or_404(Agricultural.objects.select_related('product'), product__slug=kwargs['slug'], product__author=request.user)
-            s = AgriculturalAddSerializer(obj, data=request.data, partial=True)
-            s.is_valid(raise_exception=True)
-            s.save()
+        with transaction.atomic():
+            if "product" in request.data:
+                p = get_object_or_404(Product, slug=kwargs['slug'], author=request.user)
+                s = ProductAddSerializer(p, data=request.data["product"], partial=True)
+                s.is_valid(raise_exception=True)
+                s.save()
+                request.data.pop('product')
+            if request.data:
+                obj = get_object_or_404(Agricultural.objects.select_related('product'), product__slug=kwargs['slug'],
+                                        product__author=request.user)
+                s = AgriculturalAddSerializer(obj, data=request.data, partial=True)
+                s.is_valid(raise_exception=True)
+                s.save()
 
-        return Response(status=201)
+            return Response(status=201)
