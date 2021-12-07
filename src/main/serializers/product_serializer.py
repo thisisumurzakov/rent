@@ -48,4 +48,4 @@ class ProductAddSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
     class Meta:
         model = Product
-        exclude = ('publish', 'created', 'updated')
+        exclude = ('publish', 'created', 'updated', 'slug', 'author')
