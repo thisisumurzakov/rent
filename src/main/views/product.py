@@ -164,7 +164,8 @@ class ProductSearchView(ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self):
-        filterset_class = eval(f'{self.kwargs["subcategory"]}Filter')
+        s = self.kwargs["subcategory"].capitalize()
+        filterset_class = eval(f'{s}Filter')
         return Product.objects.filter(draft=False, subcategory=self.kwargs["subcategory"]).order_by('-publish').select_related('subcategory').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
 
