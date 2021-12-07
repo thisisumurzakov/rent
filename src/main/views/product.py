@@ -86,50 +86,51 @@ class ProductGetView(APIView):
 class ProductView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, *args, **kwargs):
-        with transaction.atomic():
-            try:
-                request.data['product']['author'] = request.user.id
-                request.data['product']['slug'] = slugify(request.data['product']['title'])+ \
-                             ''.join(random.choices(
-                                 string.ascii_uppercase + string.ascii_lowercase + string.digits,
-                                 k=6))
-                s = request.data['product']['subcategory'].capitalize()
-                exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
-                serializer = eval(f"{s}AddSerializer(data=request.data)")
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
-                return Response(status=201, data=request.data['product']['slug'])
-            except KeyError:
-                return Response(status=400, data="Key error")
-
-    def patch(self, request, *args, **kwargs):
-        kwargs['subcategory'] = kwargs['subcategory'].capitalize()
-        if "product" in request.data:
-            p = get_object_or_404(Product, slug=kwargs['slug'], author=request.user)
-            s = ProductAddSerializer(p, data=request.data["product"],partial=True)
-            s.is_valid(raise_exception=True)
-            s.save()
-            request.data.pop('product')
-        if request.data:
-            exec(f"from {kwargs['category']}.models import {kwargs['subcategory']}")
-            obj = eval(
-                f"get_object_or_404({kwargs['subcategory']}.objects.select_related('product'), product__slug=kwargs['slug'], product__author=request.user)")
-            exec(f"from {kwargs['category']}.serializer import {kwargs['subcategory']}AddSerializer")
-            s = eval(f"{kwargs['subcategory']}AddSerializer(obj, data=request.data, partial=True)")
-            s.is_valid(raise_exception=True)
-            s.save()
-
-        return Response(status=201)
-
     def delete(self, request, *args, **kwargs):
         get_object_or_404(Product, slug=kwargs['slug'], author=request.user).delete()
         return Response(status=204)
+
+    # def post(self, request, *args, **kwargs):
+    #     with transaction.atomic():
+    #         try:
+    #             request.data['product']['author'] = request.user.id
+    #             request.data['product']['slug'] = slugify(request.data['product']['title'])+ \
+    #                          ''.join(random.choices(
+    #                              string.ascii_uppercase + string.ascii_lowercase + string.digits,
+    #                              k=6))
+    #             s = request.data['product']['subcategory'].capitalize()
+    #             exec(f"from {kwargs['category']}.serializer import {s}AddSerializer")
+    #             serializer = eval(f"{s}AddSerializer(data=request.data)")
+    #             serializer.is_valid(raise_exception=True)
+    #             serializer.save()
+    #             return Response(status=201, data=request.data['product']['slug'])
+    #         except KeyError:
+    #             return Response(status=400, data="Key error")
+    #
+    # def patch(self, request, *args, **kwargs):
+    #     kwargs['subcategory'] = kwargs['subcategory'].capitalize()
+    #     if "product" in request.data:
+    #         p = get_object_or_404(Product, slug=kwargs['slug'], author=request.user)
+    #         s = ProductAddSerializer(p, data=request.data["product"],partial=True)
+    #         s.is_valid(raise_exception=True)
+    #         s.save()
+    #         request.data.pop('product')
+    #     if request.data:
+    #         exec(f"from {kwargs['category']}.models import {kwargs['subcategory']}")
+    #         obj = eval(
+    #             f"get_object_or_404({kwargs['subcategory']}.objects.select_related('product'), product__slug=kwargs['slug'], product__author=request.user)")
+    #         exec(f"from {kwargs['category']}.serializer import {kwargs['subcategory']}AddSerializer")
+    #         s = eval(f"{kwargs['subcategory']}AddSerializer(obj, data=request.data, partial=True)")
+    #         s.is_valid(raise_exception=True)
+    #         s.save()
+    #
+    #     return Response(status=201)
 
 
 class UploadImageView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser, JSONParser)
+
     def post(self, request, slug):
         print(request.data)
         if 'media[]' in request.data:
