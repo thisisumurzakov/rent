@@ -33,7 +33,7 @@ class AgriculturalView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = AgriculturalAddSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.validated_data['product']['author'] = request.user.id
+        serializer.validated_data['product']['author'] = request.user
         serializer.validated_data['product']['slug'] = slugify(request.data['product']['title']) + \
                                                        ''.join(random.choices(
                                                            string.ascii_uppercase + string.ascii_lowercase + string.digits,
