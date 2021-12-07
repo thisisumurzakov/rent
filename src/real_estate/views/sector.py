@@ -28,7 +28,7 @@ class SectorGetView(APIView):
         return Response(data)
 
 
-class ProductView(APIView):
+class SectorView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

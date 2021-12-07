@@ -28,7 +28,7 @@ class Other_tGetView(APIView):
         return Response(data)
 
 
-class ProductView(APIView):
+class Other_tView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

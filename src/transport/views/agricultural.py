@@ -28,7 +28,7 @@ class AgriculturalGetView(APIView):
         return Response(data)
 
 
-class ProductView(APIView):
+class AgriculturalView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

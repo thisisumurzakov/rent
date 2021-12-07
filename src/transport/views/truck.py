@@ -28,7 +28,7 @@ class TruckGetView(APIView):
         return Response(data)
 
 
-class ProductView(APIView):
+class TruckView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

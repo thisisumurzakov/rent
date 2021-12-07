@@ -28,7 +28,7 @@ class CarGetView(APIView):
         return Response(data)
 
 
-class ProductView(APIView):
+class CarView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

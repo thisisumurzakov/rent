@@ -21,6 +21,9 @@ urlpatterns = [
 
     path('main/', MainPageProductListView.as_view()),
     path('my/', MyProductsView.as_view()),
+    path('real_estate/', include('real_estate.urls')),
+    path('transport/', include('transport.urls')),
+
     path('product/detail/<slug:category>/<slug:subcategory>/<slug:slug>/', ProductGetView.as_view()),
     path('product/list/<slug:category>/<slug:subcategory>/', ProductListView.as_view()),
     path('product/add/<slug:category>/', ProductView.as_view()),

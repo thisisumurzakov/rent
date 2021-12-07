@@ -28,7 +28,7 @@ class Vacation_homeGetView(APIView):
         return Response(data)
 
 
-class ProductView(APIView):
+class Vacation_homeView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
