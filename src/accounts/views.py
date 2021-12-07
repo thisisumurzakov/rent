@@ -41,6 +41,7 @@ def generate_uuid():
 def set_cache(key, val, ttl=300):
     cache.set(f"{key}", val, timeout=ttl)
 
+
 def send_sms(phone_number, code):
     phone_number = str(phone_number)
     text_message = f"Arenduy: {code}"
@@ -68,6 +69,7 @@ def send_sms(phone_number, code):
     body = json.dumps(body)
     return requests.post(settings.SMS_SERVICE_URL, headers=headers, data=body)
 
+
 class SignUpView(APIView):
     throttle_scope = "sendSMS"
     permission_classes = (AllowAny,)
@@ -93,6 +95,7 @@ class SignUpView(APIView):
         set_cache(f"{phone_number}_code", generated_code)
         return Response(status=status.HTTP_201_CREATED)
 
+
 class VerifySMSCodeView(APIView):
     permission_classes = (AllowAny,)
 
@@ -110,6 +113,7 @@ class VerifySMSCodeView(APIView):
         cache.expire(phone_number, timeout=1)
         return Response(status=status.HTTP_200_OK)
 
+
 class LogInSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         attrs = super(LogInSerializer, self).validate(attrs)
@@ -117,8 +121,10 @@ class LogInSerializer(TokenObtainPairSerializer):
         attrs.update({'id': self.user.id})
         return attrs
 
+
 class LogInView(TokenObtainPairView):
     serializer_class = LogInSerializer
+
 
 class LogOutView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -131,6 +137,7 @@ class LogOutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except TokenError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class ForgotPasswordView(APIView):
     throttle_scope = "sendSMS"
@@ -156,6 +163,7 @@ class ForgotPasswordView(APIView):
         set_cache(instance.phone_number, code)
         return Response(status=status.HTTP_200_OK)
 
+
 class VerifySMSCodeResetPasswordView(APIView):
     permission_classes = (AllowAny,)
 
@@ -179,6 +187,7 @@ class VerifySMSCodeResetPasswordView(APIView):
         set_cache(key=guid, val=instance.phone_number)
         return Response(data={"guid": guid}, status=status.HTTP_200_OK)
 
+
 class ResetPasswordView(APIView):
     permission_classes = (AllowAny,)
 
@@ -194,6 +203,7 @@ class ResetPasswordView(APIView):
         instance.save()
         cache.expire(data["guid"], timeout=1)
         return Response(status=status.HTTP_200_OK)
+
 
 class ChangePhoneNumberView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -219,6 +229,7 @@ class ChangePhoneNumberView(APIView):
         set_cache(f"{phone_number}_code", generated_code)
         return Response(status=status.HTTP_201_CREATED)
 
+
 class VerifySMSCodeChangePhoneNumberView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -235,6 +246,7 @@ class VerifySMSCodeChangePhoneNumberView(APIView):
         instance.save()
         cache.expire(f"{phone_number}_code", timeout=1)
         return Response(status=status.HTTP_200_OK)
+
 
 class UserPasswordUpdateView(APIView):
     permission_classes = (IsAuthenticated,)
