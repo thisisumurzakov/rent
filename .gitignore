@@ -1,3 +1,4 @@
 venv/
 .idea/
 deployments/development/.env
+__pycache__/
