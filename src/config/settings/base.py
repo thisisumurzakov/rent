@@ -247,3 +247,8 @@ INTERNAL_IPS = [
 ]
 
 django_on_heroku.settings(locals())
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+    'http://localhost:3000',
+)
