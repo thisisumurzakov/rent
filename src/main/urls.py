@@ -5,7 +5,7 @@ from .views.rating import AddStarRatingView, RatingCheckView
 from .views.category import CategoryListView, CategoryChildListView, CityListView
 from .views.product import (ProductListView, ProductView, ProductSearchView,
                             UploadImageView, MyProductsView, MainPageProductListView,
-                            FavouriteView, SimilarProductListView, SearchAllView)
+                            FavouriteView, SimilarProductListView, SearchAllView, MapView)
 
 
 urlpatterns = [
@@ -35,4 +35,6 @@ urlpatterns = [
 
     path('review/add/<slug:product>/', ReviewAddView.as_view()),
     path('review/list/<slug:product>/', ReviewListView.as_view()),
+
+    path('map/<slug:subcategory>/', MapView.as_view()),
 ]

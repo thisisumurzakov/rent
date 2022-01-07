@@ -15,7 +15,8 @@ from .filters import *
 from django_filters import rest_framework as filters
 from .pagination import Pagination
 from ..models import Product, Subcategory, Rating
-from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer, MediaAddSerializer
+from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer, MediaAddSerializer, \
+    MapSerializer
 
 
 class MainPageProductListView(ListAPIView):
@@ -37,6 +38,14 @@ class ProductListView(ListAPIView):
         return Product.objects.filter(subcategory=self.kwargs["subcategory"], draft=False).order_by('-publish')\
             .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+
+
+class MapView(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = MapSerializer
+
+    def get_queryset(self):
+        return Product.objects.filter(subcategory=self.kwargs["subcategory"], draft=False).order_by('-publish')
 
 
 class MyProductsView(ListAPIView):

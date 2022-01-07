@@ -22,12 +22,18 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('media', 'title', 'slug', 'price', 'city', 'publish',
-                  'updated', 'subcategory', 'avarege_star')
+                  'updated', 'subcategory', 'avarege_star', 'location')
 
     def get_media(self, instance):
         print(self)
         image = instance.media.first()
         return MediaSerializer(image).data
+
+
+class MapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('location', 'slug', 'price')
 
 
 class AuthorSerializer(serializers.Serializer):
