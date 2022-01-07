@@ -25,6 +25,7 @@ class FlatGetView(APIView):
             data["is_favourite"] = True
         else:
             data["is_favourite"] = False
+        data['tests'] = request.user
         return Response(data)
 
 
