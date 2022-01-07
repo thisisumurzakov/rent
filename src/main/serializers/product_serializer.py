@@ -39,6 +39,13 @@ class MapSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('location', 'slug', 'price', "category")
 
+class FavouriteSerializer(serializers.ModelSerializer):
+    category = CategirySerializer(source='subcategory.parent')
+    class Meta:
+        model = Product
+        fields = ('media', 'title', 'slug', 'price', 'city', 'publish',
+                  'updated', 'subcategory', 'avarege_star', 'location')
+
 
 class AuthorSerializer(serializers.Serializer):
     first_name = serializers.CharField()
