@@ -44,7 +44,7 @@ class FavouriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('media', 'title', 'slug', 'price', 'city', 'publish',
-                  'updated', 'subcategory', 'avarege_star', 'location', 'category')
+                  'updated', 'subcategory', 'location', 'category')
 
 
 class AuthorSerializer(serializers.Serializer):

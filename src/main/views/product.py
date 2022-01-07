@@ -186,7 +186,8 @@ class FavouriteView(APIView):
     def get(self, request):
         return Response(status=200, data=
         FavouriteSerializer(request.user.fav_posts.all()\
-            .select_related('subcategory__parent'), many=True).data)
+            .select_related('subcategory__parent')\
+            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings'))), many=True).data)
 
     def post(self, request):
         Product.objects.get(slug=request.data['slug']).favourite.add(request.user)
