@@ -50,13 +50,12 @@ class MapView(ListAPIView):
 
 class MyProductsView(ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProductListSerializer
+    serializer_class = FavouriteSerializer
     pagination_class = Pagination
 
     def get_queryset(self):
         return Product.objects.filter(author=self.request.user).order_by('-publish')\
-            .select_related('subcategory__parent').select_related('city').prefetch_related('media')\
-            .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings')))
+            .select_related('subcategory__parent').select_related('city').prefetch_related('media')
 
 
 # class ProductGetView(APIView):
