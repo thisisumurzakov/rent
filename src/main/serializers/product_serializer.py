@@ -30,10 +30,14 @@ class ProductListSerializer(serializers.ModelSerializer):
         return MediaSerializer(image).data
 
 
+class CategirySerializer(serializers.Serializer):
+    slug = serializers.SlugField()
+
 class MapSerializer(serializers.ModelSerializer):
+    category = CategirySerializer(source='subcategory__parent')
     class Meta:
         model = Product
-        fields = ('location', 'slug', 'price')
+        fields = ('location', 'slug', 'price', "category")
 
 
 class AuthorSerializer(serializers.Serializer):
