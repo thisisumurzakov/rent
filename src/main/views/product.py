@@ -45,7 +45,7 @@ class MapView(ListAPIView):
     serializer_class = MapSerializer
 
     def get_queryset(self):
-        return Product.objects.filter(subcategory=self.kwargs["subcategory"], draft=False).select_related('subcategory').order_by('-publish')
+        return Product.objects.filter(city=self.kwargs["city"], draft=False).select_related('subcategory__parent').order_by('-publish')
 
 
 class MyProductsView(ListAPIView):

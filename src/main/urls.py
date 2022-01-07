@@ -36,5 +36,5 @@ urlpatterns = [
     path('review/add/<slug:product>/', ReviewAddView.as_view()),
     path('review/list/<slug:product>/', ReviewListView.as_view()),
 
-    path('map/<slug:subcategory>/', MapView.as_view()),
+    path('map/<slug:city>/', MapView.as_view()),
 ]

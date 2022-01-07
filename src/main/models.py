@@ -36,7 +36,7 @@ def upload_to(instance, filename):
 class Product(models.Model):
     title = models.CharField(max_length=150)
     slug = models.SlugField(unique=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     price = models.PositiveIntegerField()
     views = models.PositiveIntegerField(default=0)
     address = models.CharField(max_length=300)
@@ -46,7 +46,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     draft = models.BooleanField(default=False)
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, null=True, blank=True)
     favourite = models.ManyToManyField(User, related_name="fav_posts", blank=True)
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name="%(app_label)s_%(class)s_related")
     tags = TaggableManager()

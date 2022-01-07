@@ -34,7 +34,7 @@ class CategirySerializer(serializers.Serializer):
     slug = serializers.SlugField()
 
 class MapSerializer(serializers.ModelSerializer):
-    category = CategirySerializer(source='subcategory__parent')
+    category = CategirySerializer(source='subcategory.parent')
     class Meta:
         model = Product
         fields = ('location', 'slug', 'price', "category")
