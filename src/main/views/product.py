@@ -16,7 +16,7 @@ from django_filters import rest_framework as filters
 from .pagination import Pagination
 from ..models import Product, Subcategory, Rating
 from ..serializers.product_serializer import ProductListSerializer, ProductAddSerializer, MediaAddSerializer, \
-    MapSerializer
+    MapSerializer, FavouriteSerializer
 
 
 class MainPageProductListView(ListAPIView):
@@ -185,7 +185,7 @@ class FavouriteView(APIView):
 
     def get(self, request):
         return Response(status=200, data=
-        ProductListSerializer(request.user.fav_posts.all()\
+        FavouriteSerializer(request.user.fav_posts.all()\
             .select_related('subcategory__parent')\
             .annotate(avarege_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings'))), many=True).data)
 
