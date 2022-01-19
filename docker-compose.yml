@@ -9,10 +9,35 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
     ports:
-      - ${DB_PORT}:5432
+      - "5433:5433"
 
   redis-service:
     image: redis:6.0.9-alpine
     container_name: "${PROJECT_NAME}-redis"
     expose:
       - 6379
+
+  django_gunicorn:
+    volumes:
+      - static:/static
+    env_file:
+      - .env
+    build:
+      context: .
+    ports:
+      - "8068:8068"
+    depends_on:
+      - postgres-db
+      - redis-service
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - static:/static
+    ports:
+      - "81:81"
+    depends_on:
+      - django_gunicorn
+
+volumes:
+  static:
